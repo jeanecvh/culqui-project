@@ -1,0 +1,65 @@
+@import './_variables';
+
+@mixin font-base($size, $color: $color-font-black, $weight: $fw-regular) {
+  font-family: 'Manrope';
+  font-weight: $weight;
+  font-size: $size;
+  color: $color;
+}
+
+@mixin font-title-primary($color: $color-font-white) {
+  @include font-base(48px, $color, $fw-bold);
+}
+
+@mixin font-title-secundary($color: $color-font-black) {
+  @include font-base(24px, $color, $fw-bold);
+}
+
+@mixin font-title-label($color: $color-font-black) {
+  @include font-base(14px, $color, $fw-semiRegular);
+}
+
+@mixin font-button($color: $color-font-white) {
+  @include font-base(16px, $color, $fw-semiRegular);
+}
+
+@mixin font-message-error($color: $color-error) {
+  @include font-base(12px, $color, $fw-regular);
+}
+
+@mixin font-list-menu($color: $color-font-black) {
+  @include font-base(14px, $color, $fw-bold);
+}
+
+@mixin font-name-user($color: $color-font-black) {
+  @include font-base(12px, $color, $fw-bold);
+}
+
+@mixin font-button-bold($color: $color-font-white) {
+  @include font-base(16px, $color, $fw-bold);
+}
+
+@mixin font-table-rows($color: $color-font-black) {
+    @include font-base(12px, $color, $fw-regular);
+  }
+
+@mixin font-table-rows-name($color: $color-font-black) {
+  @include font-base(12px, $color, $fw-semiRegular);
+}
+
+@mixin font-table-rows-email($color: $color-font-grey) {
+    @include font-base(10px, $color, $fw-regular);
+  }
+
+@mixin text-button() {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+@mixin text-button-active() {
+  @include text-button();
+  color: $color-green;
+}

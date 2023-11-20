@@ -5,19 +5,19 @@ import FormLogin from '../components/form/FormLogin.vue'
 <template>
   <main class="container-main">
     <div class="container-main__layout">
-      <div class="container-main__front-page">
+      <div class="layout-front-page">
         <img
-          class="container-main__img-employees"
+          class="layout-front-page__img-employees"
           alt="empleados analizando data"
           src="../assets/login.png"
         />
-        <div class="container-main__line-green"></div>
-        <div class="container-main__front-text">
-          <img src="../assets/logo_white.svg" alt="logo de culqui" />
-          <h1>Dale más power⚡a tus empleados hoy 💪</h1>
+        <div class="layout-front-page__line-green"></div>
+        <div class="front">
+          <img class="front__img" src="../assets/logo_white.svg" alt="logo de culqui" />
+          <h1 class="front__text">Dale más power⚡a tus empleados hoy 💪</h1>
         </div>
       </div>
-      <div class="container-main__form">
+      <div class="layout-main-form">
         <FormLogin></FormLogin>
       </div>
     </div>
@@ -25,21 +25,37 @@ import FormLogin from '../components/form/FormLogin.vue'
 </template>
 
 <style lang="scss" scoped>
+@import '../utils/styles/_mixins.scss';
 .container-main {
-  min-height: 100vh;
+  min-height: 100%;
   &__layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-  }
-
-  &__img-employees {
-    height: 100%;
-    width: 100%;
-  }
-
-  &__line-green {
-    height: 20px;
-    background-color: green;
+    .layout-front-page {
+      margin: 0;
+      background-color: #282828;
+      color: white;
+      &__img-employees {
+        height: 500px;
+        width: 100%;
+        background-size: cover;
+      }
+      &__line-green {
+        height: 7px;
+        background-color: green;
+      }
+      .front {
+        padding: 50px;
+        &__text {
+          @include font-title-primary;
+          margin: 0;
+        }
+      }
+    }
+    .layout-main-form {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 </style>
