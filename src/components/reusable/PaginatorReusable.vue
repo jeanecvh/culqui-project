@@ -2,10 +2,10 @@
   <div class="container-paginator">
     <div class="container-paginator__index">
       <div class="container-button">
-        <button @click="goToPage(page - 1)" :disabled="page === 1">{{ '<' }}</button>
+        <button @click="goToPage(page - 1)" :disabled="page === pageCount">{{ '<' }}</button>
       </div>
       <div class="container-button">
-        <button @click="goToPage(page + 1)" :disabled="page === pageCount">{{ '>' }}</button>
+        <button @click="goToPage(page + 1)" :disabled="page === 1">{{ '>' }}</button>
       </div>
     </div>
     <div class="container-paginator__select">
@@ -25,7 +25,7 @@ import { ref, defineProps, defineEmits, watchEffect } from 'vue'
 const props = defineProps({
   pageCount: {
     type: Number,
-    default: 1
+    default: 0
   }
 })
 

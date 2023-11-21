@@ -9,51 +9,67 @@
           >Correo electrónico
           <span class="required-field">*</span>
         </label>
-        <input placeholder="Ingresa el correo electrónico" type="email" id="email" v-model="email" required />
+        <input
+          placeholder="Ingresa el correo electrónico"
+          type="email"
+          id="email"
+          v-model="email"
+          required
+        />
       </div>
       <div class="form__container-input">
         <label for="password"
           >Contraseña
           <span class="required-field">*</span>
         </label>
-        <input placeholder="Ingresa la contraseña" type="password" id="password" v-model="password" required />
+        <input
+          placeholder="Ingresa la contraseña"
+          type="password"
+          id="password"
+          v-model="password"
+          required
+        />
       </div>
       <div class="message-error" v-if="messageError">
         <i class="fa-solid fa-circle-exclamation"></i>
-        <p class="message-error__text">
-          Correo o contraseña incorrectos
-        </p>
+        <p class="message-error__text">Correo o contraseña incorrectos</p>
       </div>
-      
-      <button type="submit" class="form__submit-button" @click.prevent="login()">Iniciar sesión</button>
+
+      <button type="submit" class="form__submit-button" @click.prevent="login()">
+        Iniciar sesión
+      </button>
     </form>
-    <p class="container-form__message">¿Eres nuevo aquí? <a class="link" href="#">Crea una cuenta</a></p>
+    <p class="container-form__message">
+      ¿Eres nuevo aquí? <a class="link" href="#">Crea una cuenta</a>
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Ref, ref } from "vue";
-import {simulateAPICall} from "../../utils/form-validation";
+import {loginService} from "../../services/login";
 import {useRouter} from 'vue-router';
+import { log } from "console";
+import { UserData, Response } from "../../interfaces/auth.interfaces";
 const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 const messageError: Ref<boolean> = ref(false);
 const router = useRouter();
-// import { computed } from "vue";
 
-// const styleBorderInput = computed( () => ({
-//   'border-color': true ? 
-// }))
   const login = async () => {
-    const response = await simulateAPICall(email.value, password.value)
-    if(response.status == 404){
+    const body = {
+    correo: email.value,
+    password: password.value,
+    };
+    const responseLogin: Response<UserData>  = await loginService(body)
+
+    if(responseLogin.status == 'error'){
       messageError.value = true
-    } else if (response.status == 200){
+    } else if (responseLogin.status == 'success'){
+      localStorage.setItem('responseLogin', JSON.stringify(responseLogin.data));
       messageError.value = false
       router.push({name:'employees'})
     }
-    console.log('que eres',response)
-     console.log('holi',password.value)
   }
 
 </script>
@@ -93,11 +109,11 @@ const router = useRouter();
         border-radius: 10px;
         border: 1px solid $color-input-grey;
         outline: none !important;
-        &::placeholder{
+        &::placeholder {
           @include font-title-label($color-font-grey);
         }
         &:focus,
-        :active{
+        :active {
           border-color: $color-success;
           outline: none !important;
         }
@@ -110,14 +126,14 @@ const router = useRouter();
       @include font-button;
       background: $color-black;
       width: 100%;
-      margin: 23px 0
+      margin: 23px 0;
     }
-    .message-error{
+    .message-error {
       @include font-message-error;
       flex-direction: row;
       align-items: center;
       display: flex;
-      &__text{
+      &__text {
         padding-left: 9px;
       }
     }
@@ -126,7 +142,7 @@ const router = useRouter();
   &__message {
     @include font-title-label($color-font-grey);
     margin: 0;
-    .link{
+    .link {
       color: $color-font-green;
       text-decoration: none;
     }

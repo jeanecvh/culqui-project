@@ -3,8 +3,10 @@
 <template>
   <div class="container-header">
     <div class="container-header__user">
-      <div class="user__initials">JH</div>
-      <div class="user__name">Jeanella Hugo</div>
+      <div class="user__initials">
+        <p>{{ obtenerInicialesNombre }}</p>
+      </div>
+      <div class="user__name">{{ userName }}</div>
     </div>
   </div>
 </template>
@@ -33,11 +35,31 @@
       background: $color-backgroud-name-user;
       @include font-list-menu($color-font-white);
     }
-    .user__name{
-        @include font-name-user;
-        margin-left: 8px;
+    .user__name {
+      @include font-name-user;
+      margin-left: 8px;
     }
   }
 }
 </style>
 
+<script setup lang="ts">
+import { computed } from 'vue'
+import { UserData } from '../interfaces/auth.interfaces'
+
+const userStorage = localStorage.getItem('responseLogin')
+
+const userName = computed(() => {
+  return JSON.parse(userStorage).user.nombre
+})
+// const userName = computed(() =>  'JSON.parse(userStorage).user.nombre');
+
+const obtenerInicialesNombre = computed(() => {
+  const user = userName.value;
+  const iniciales = user
+    .split(' ')
+    .map((parte) => parte.charAt(0))
+    .join('')
+  return iniciales
+})
+</script>

@@ -33,7 +33,9 @@
       </div>
       <div class="container-background-table__table">
         <table-reusable
-          :employeeList="employeeList"
+          :employeeList="visibleEmployees"
+          :visibleEmployees= "visibleEmployees.length"
+          :totalItems = "employeeList.lenght"
           @editEmployee="editEmployee()"
           @deleteEmployee="deleteEmployee"
           @viewDetails="viewDetails"
@@ -54,9 +56,9 @@ import { computed, ref, watch } from 'vue'
 import TableReusable from '../components/reusable/TableReusable.vue'
 import PaginatorReusable from '../components/reusable/PaginatorReusable.vue'
 
-const employeesPerPageOptions = [5, 10, 15];
+const employeesPerPageOptions = [8, 15];
 const currentPage = ref(1);
-const itemsPerPage = ref(employeesPerPageOptions[0]);
+const itemsPerPage = ref(employeesPerPageOptions[8]);
 
 const employeeList = ref([
   {
@@ -114,23 +116,22 @@ const employeeList = ref([
     office: 'HQ',
     account: '55667',
     email: 'mike.wilson@example.com'
-  }
+  },
 ])
-// Funciones para manejar eventos de la tabla
+
+const viewDetails = (employee) => {
+  console.log('Ver detalles de empleado:', employee)
+}
 const editEmployee = (employee) => {
   console.log('Editar empleado:', employee)
-  // Lógica para editar empleado
+
 }
 
 const deleteEmployee = (employee) => {
   console.log('Eliminar empleado:', employee)
-  // Lógica para eliminar empleado
 }
 
-const viewDetails = (employee) => {
-  console.log('Ver detalles de empleado:', employee)
-  // Lógica para ver detalles de empleado
-}
+
 const totalPages = computed(() => Math.ceil(employeeList.value.length / itemsPerPage.value));
 
 const visibleEmployees = computed(() => {
