@@ -45,14 +45,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { UserData } from '../interfaces/auth.interfaces'
 
 const userStorage = localStorage.getItem('responseLogin')
 
 const userName = computed(() => {
   return JSON.parse(userStorage).user.nombre
-})
-// const userName = computed(() =>  'JSON.parse(userStorage).user.nombre');
+});
 
 const obtenerInicialesNombre = computed(() => {
   const user = userName.value;

@@ -49,8 +49,8 @@
 import { Ref, ref } from "vue";
 import {loginService} from "../../services/login";
 import {useRouter} from 'vue-router';
-import { log } from "console";
-import { UserData, Response } from "../../interfaces/auth.interfaces";
+import { UserData } from "../../interfaces/auth.interfaces";
+import {Response} from "../../interfaces/response.interfaces";
 const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 const messageError: Ref<boolean> = ref(false);

@@ -33,126 +33,81 @@
       </div>
       <div class="container-background-table__table">
         <table-reusable
-          :employeeList="visibleEmployees"
-          :visibleEmployees= "visibleEmployees.length"
-          :totalItems = "employeeList.lenght"
+          :employeeList="refResponseDataEmployee"
           @editEmployee="editEmployee()"
           @deleteEmployee="deleteEmployee"
           @viewDetails="viewDetails"
         >
         </table-reusable>
-        <paginator-reusable 
-         :pageCount="totalPages" 
-         @changePage="handlePageChange" 
-         @changeItemsPerPage="handleItemsPerPageChange">
+        <paginator-reusable
+          :pageCount="1"
+          @changePage="handlePageChange"
+          @changeItemsPerPage="handleItemsPerPageChange"
+        >
         </paginator-reusable>
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import TableReusable from '../components/reusable/TableReusable.vue'
 import PaginatorReusable from '../components/reusable/PaginatorReusable.vue'
+import { employeesServices } from '../services/employees';
 
-const employeesPerPageOptions = [8, 15];
-const currentPage = ref(1);
-const itemsPerPage = ref(employeesPerPageOptions[8]);
+const employeesPerPageOptions = [8, 15]
+const currentPage = ref(1)
+const itemsPerPage = ref(employeesPerPageOptions[8])
+const limit = 10
+const page = 1
+const refResponseDataEmployee = ref(null)
 
-const employeeList = ref([
-  {
-    name: 'John Doe',
-    position: 'Developer',
-    department: 'IT',
-    office: 'HQ',
-    account: '12345',
-    email: 'john.doe@example.com'
-  },
-  {
-    name: 'Jane Smith',
-    position: 'Designer',
-    department: 'Creative',
-    office: 'Branch',
-    account: '67890',
-    email: 'jane.smith@example.com'
-  },
-  {
-    name: 'Bob Johnson',
-    position: 'Manager',
-    department: 'HR',
-    office: 'HQ',
-    account: '13579',
-    email: 'bob.johnson@example.com'
-  },
-  {
-    name: 'Alice Brown',
-    position: 'Analyst',
-    department: 'Finance',
-    office: 'Branch',
-    account: '24680',
-    email: 'alice.brown@example.com'
-  },
-  {
-    name: 'Chris Davis',
-    position: 'Engineer',
-    department: 'IT',
-    office: 'HQ',
-    account: '11223',
-    email: 'chris.davis@example.com'
-  },
-  {
-    name: 'Eva White',
-    position: 'Coordinator',
-    department: 'Marketing',
-    office: 'Branch',
-    account: '33445',
-    email: 'eva.white@example.com'
-  },
-  {
-    name: 'Mike Wilson',
-    position: 'Supervisor',
-    department: 'Operations',
-    office: 'HQ',
-    account: '55667',
-    email: 'mike.wilson@example.com'
-  },
-])
 
+// let empleadosData = ref(null)
+const userStorage = JSON.parse(localStorage.getItem('responseLogin'))
+
+const empleadosData = async () => {
+  try {
+    const {data} = await employeesServices(
+      userStorage?.token,
+      limit,
+      page
+    )
+    console.log('res.', data)
+    refResponseDataEmployee.value= data;
+    return data
+  } catch (error) {
+    console.error('Error al obtener empleados:', error.message)
+    error.value = error.message
+    return null // Puedes devolver un valor predeterminado o manejar el error según tus necesidades
+  }
+}
 const viewDetails = (employee) => {
   console.log('Ver detalles de empleado:', employee)
 }
 const editEmployee = (employee) => {
   console.log('Editar empleado:', employee)
-
 }
 
 const deleteEmployee = (employee) => {
   console.log('Eliminar empleado:', employee)
 }
 
-
-const totalPages = computed(() => Math.ceil(employeeList.value.length / itemsPerPage.value));
-
-const visibleEmployees = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage.value;
-  const endIndex = startIndex + itemsPerPage.value;
-  return employeeList.value.slice(startIndex, endIndex);
-});
-
 const handlePageChange = (pageNumber) => {
-  currentPage.value = pageNumber;
-};
+  currentPage.value = pageNumber
+}
 
 const handleItemsPerPageChange = (newItemsPerPage) => {
-  itemsPerPage.value = newItemsPerPage;
-  currentPage.value = 1;
-};
+  itemsPerPage.value = newItemsPerPage
+  currentPage.value = 1
+}
 
 // Actualizar el número total de páginas cuando cambia la lista de empleados
-watch([employeeList, itemsPerPage], () => {
-  currentPage.value = 1;
-});
+watch([empleadosData, itemsPerPage], () => {
+  currentPage.value = 1
+})
 </script>
 
 <style lang="scss" scoped>

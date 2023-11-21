@@ -27,14 +27,14 @@
         <tr v-for="(employee, index) in props.employeeList" :key="index" class="table-tr">
           <td class="table-tr__name-email" tabindex="0">
             <div class="name-email">
-              <span class="name-email__name">{{ employee.name }}</span>
-              <span class="name-email__email">{{ employee.email }}</span>
+              <span class="name-email__name">{{ employee.nombre }}</span>
+              <span class="name-email__email">{{ employee.correo }}</span>
             </div>
           </td>
-          <td tabindex="0">{{ employee.position }}</td>
-          <td tabindex="0">{{ employee.department }}</td>
-          <td tabindex="0">{{ employee.office }}</td>
-          <td tabindex="0">{{ employee.account }}</td>
+          <td tabindex="0">{{ employee.cargo }}</td>
+          <td tabindex="0">{{ employee.departamento }}</td>
+          <td tabindex="0">{{ employee.oficina }}</td>
+          <td tabindex="0">{{ employee.estadoCuenta }}</td>
           <td style="width: 150px" tabindex="0">
             <div class="action-buttons">
               <div class="action-buttons__container">
@@ -57,8 +57,8 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps, defineEmits } from 'vue'
+<script setup lang="ts">
+import { defineProps, defineEmits, onMounted } from 'vue'
 
 const props = defineProps({
   employeeList: {
@@ -66,6 +66,7 @@ const props = defineProps({
     default: () => []
   }
 })
+
 
 const emit = defineEmits(['editEmployee', 'deleteEmployee', 'viewDetails']);
 
